@@ -1,3 +1,10 @@
+# v0.1.0-alpha
+
+- Windows and Linux packages include native shards freshly extracted from 53 original-disc code images, plus the BIOS resident helper.
+- Every release invocation builds and audits the complete configured AOT inventory. Runtime compilation and interpreter fallback remain available.
+- Original loader evidence, six explicit exclusions and coverage limits are documented in `docs/AOT_OVERLAYS.md`. Full static coverage is not claimed.
+- Packaging uses current framework and launcher revisions and the same release version on both platforms.
+
 # MegaManX5Recomp v0.0.2-alpha
 
 This release brings Mega Man X5 onto the current PSXRecomp runtime and launcher,

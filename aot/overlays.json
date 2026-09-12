@@ -1,0 +1,408 @@
+{
+  "schema": "psxrecomp AOT methods v1",
+  "game_id": "SLUS-01334",
+  "disc_hashes": {
+    "sha1": "10709231f857636b5ccd3cd9acebc91458dcb5fd"
+  },
+  "expected_records": 54,
+  "strict_bounds": true,
+  "bios_resident": true,
+  "checks": [
+    {
+      "method": "words",
+      "file": "SLUS_013.34",
+      "base": "0x80010000",
+      "file_offset": 2048,
+      "values": {
+        "0x80010000": "0x800ee970",
+        "0x80013528": "0x3c05800f",
+        "0x8001352c": "0x3c038007",
+        "0x80013530": "0xafb10014",
+        "0x80013534": "0x3c11800d",
+        "0x80013538": "0xafb3001c",
+        "0x8001353c": "0x26331c00",
+        "0x80013540": "0x2463fc5c",
+        "0x80013544": "0xafbf0024",
+        "0x80013548": "0xafb40020",
+        "0x8001354c": "0xafb20018",
+        "0x80013550": "0xafb00010",
+        "0x80013554": "0x8262001d",
+        "0x80013558": "0x3c10800c",
+        "0x8001355c": "0x431021",
+        "0x80013560": "0x9044fffe",
+        "0x80013564": "0x8e14e9a8",
+        "0x80013568": "0xc0057ad",
+        "0x8001356c": "0x34a5a000",
+        "0x8001369c": "0x3c05800f",
+        "0x800136a0": "0x3c028007",
+        "0x800136a4": "0x8203001d",
+        "0x800136a8": "0x2442fd80",
+        "0x800136ac": "0x621821",
+        "0x800136b0": "0x90640000",
+        "0x800136b4": "0xc0057ad",
+        "0x800136b8": "0x34a5a000",
+        "0x800136bc": "0xc005019",
+        "0x800136c0": "0x0",
+        "0x800136c4": "0x3c028001",
+        "0x800136c8": "0x3c048007",
+        "0x800136cc": "0x2484fd50",
+        "0x800136d0": "0x8c450000",
+        "0x800136d4": "0x8203000c",
+        "0x800136d8": "0x8202000d",
+        "0x800136dc": "0x31840",
+        "0x800136e0": "0x431021",
+        "0x800136e4": "0x441021",
+        "0x800136e8": "0x90440000",
+        "0x800136ec": "0xc0057ad",
+        "0x800136f0": "0x0",
+        "0x800144b8": "0x8e045a1c",
+        "0x800144bc": "0x24050200",
+        "0x800144c0": "0xc019c66",
+        "0x800144c4": "0xacc25a24",
+        "0x800144c8": "0x8e235a18",
+        "0x800144cc": "0x8e025a1c",
+        "0x800144d0": "0x2463f800",
+        "0x800144d4": "0x24420800",
+        "0x800144d8": "0xae235a18",
+        "0x800144dc": "0x8005158",
+        "0x800144e0": "0xae025a1c",
+        "0x80014520": "0x8c445a1c",
+        "0x80014524": "0x8e255a18",
+        "0x80014528": "0xace65a24",
+        "0x8001452c": "0x24a50003",
+        "0x80014530": "0xc019c66",
+        "0x80014534": "0x52882",
+        "0x80015e00": "0x27a40010",
+        "0x80015e04": "0xc018f42",
+        "0x80015e08": "0x26250014",
+        "0x80015e0c": "0x1040fffd",
+        "0x80015e10": "0x27a40010",
+        "0x80015e14": "0xc018f22",
+        "0x80015e18": "0x27a40010",
+        "0x80015e1c": "0x24040002",
+        "0x80015e20": "0x27a50010",
+        "0x80015e24": "0x3021",
+        "0x80015e28": "0xc019b6e",
+        "0x80015e2c": "0x408821",
+        "0x80015e30": "0x24040001",
+        "0x80015e34": "0x3c058010",
+        "0x80015e38": "0x34a55000",
+        "0x80015e3c": "0xc019e7a",
+        "0x80015e40": "0x24060080",
+        "0x80015e68": "0x3c02800e",
+        "0x80015e6c": "0x24456188",
+        "0x80015e70": "0x2002021",
+        "0x80015e74": "0x2406003a",
+        "0x80015e78": "0x8c820000",
+        "0x80015e7c": "0x24c6ffff",
+        "0x80015e80": "0x2221021",
+        "0x80015e84": "0xaca20000",
+        "0x80015e88": "0x8c830004",
+        "0x80015e8c": "0x24840008",
+        "0x80015e90": "0xaca30004",
+        "0x80015e94": "0x4c1fff8",
+        "0x80015e98": "0x24a50008",
+        "0x80015eb4": "0x27bdffe0",
+        "0x80015eb8": "0xafb10014",
+        "0x80015ebc": "0x808821",
+        "0x80015ec0": "0x24040001",
+        "0x80015ec4": "0xafb20018",
+        "0x80015ec8": "0xa09021",
+        "0x80015f28": "0x1180c0",
+        "0x80015f2c": "0x3c02800e",
+        "0x80015f30": "0x3c03800e",
+        "0x80015f34": "0xa080811c",
+        "0x80015f38": "0xa0515be9",
+        "0x80015f3c": "0xac725bec",
+        "0x80015f40": "0xc0056f3",
+        "0x80015f44": "0x0",
+        "0x80015f48": "0x30420040",
+        "0x80015f4c": "0x1440fffc",
+        "0x80015f50": "0x3c02800e",
+        "0x80015f54": "0x24426188",
+        "0x80015f58": "0x2021821",
+        "0x80015f5c": "0x501021",
+        "0x80015f60": "0x8c650000",
+        "0x80015f64": "0x3c03800e",
+        "0x80015f68": "0x8c440004",
+        "0x80015f6c": "0x3c02800e",
+        "0x80015f70": "0xac605a30",
+        "0x80015f74": "0x3c03800e",
+        "0x80015f78": "0xac525a1c",
+        "0x80015f7c": "0x3c02800e",
+        "0x80015f80": "0xac655a24",
+        "0x80015f84": "0x3c03800e",
+        "0x80015f88": "0xac445a20",
+        "0x80015f8c": "0xc00515d",
+        "0x80015f90": "0xac645a18",
+        "0x8006fc5c": "0x21201f1e",
+        "0x8006fc60": "0x25242322",
+        "0x8006fd50": "0x10000",
+        "0x8006fd54": "0x40302",
+        "0x8006fd58": "0x70605",
+        "0x8006fd5c": "0xa0908",
+        "0x8006fd60": "0xd0c000b",
+        "0x8006fd64": "0x11100f0e",
+        "0x8006fd68": "0x15141312",
+        "0x8006fd6c": "0x19181716",
+        "0x8006fd70": "0x1b001a",
+        "0x8006fd74": "0x1c",
+        "0x8006fd78": "0x0",
+        "0x8006fd7c": "0x1d",
+        "0x8006fd80": "0x2b2a2928",
+        "0x8006fd84": "0x2f2e2d2c",
+        "0x8006fd88": "0x33323130",
+        "0x8006fd8c": "0x37363534",
+        "0x8006fd90": "0x3a3938"
+      }
+    }
+  ],
+  "images": [
+    {
+      "method": "sector_extent_members",
+      "file": "ROCK_X5.BIN",
+      "count": 59,
+      "allow_missing": true,
+      "members": [
+        {
+          "index": 0,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 1,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 2,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 3,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 4,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 5,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 6,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 7,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 8,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 9,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 10,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 11,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 12,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 14,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 16,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 18,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 20,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 21,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 22,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 23,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 24,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 25,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 26,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 27,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 28,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 29,
+          "load_addr": "0x800ee970"
+        },
+        {
+          "index": 30,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 31,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 32,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 33,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 34,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 35,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 36,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 37,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 40,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 41,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 42,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 43,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 44,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 45,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 46,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 47,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 48,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 49,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 50,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 51,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 52,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 53,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 54,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 55,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 56,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 57,
+          "load_addr": "0x800fa000"
+        },
+        {
+          "index": 58,
+          "load_addr": "0x800fa000"
+        }
+      ],
+      "excluded_members": [
+        {
+          "index": 13,
+          "reason": "Resident function-pointer data table; no static callable roots established"
+        },
+        {
+          "index": 15,
+          "reason": "Resident function-pointer data table; no static callable roots established"
+        },
+        {
+          "index": 17,
+          "reason": "Resident function-pointer data table; no static callable roots established"
+        },
+        {
+          "index": 19,
+          "reason": "Resident function-pointer data table; no static callable roots established"
+        },
+        {
+          "index": 38,
+          "reason": "Code image; loader selection and destination not established in this bounded original-disc pass"
+        },
+        {
+          "index": 39,
+          "reason": "Code image; loader selection and destination not established in this bounded original-disc pass"
+        }
+      ]
+    }
+  ]
+}

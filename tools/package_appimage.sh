@@ -109,7 +109,7 @@ fi
 if [ "$skip_build" = 0 ]; then
     generator=Ninja; command -v ninja >/dev/null 2>&1 || generator="Unix Makefiles"
     cmake -S "$root" -B "$build_dir" -G "$generator" \
-        -DCMAKE_BUILD_TYPE=Release -DPSX_SDL_BACKEND=SDL2 -DPSX_DEBUG_TOOLS=OFF \
+        -DCMAKE_BUILD_TYPE=Release -DPSX_SDL_BACKEND=SDL3 -DPSX_DEBUG_TOOLS=OFF -DPSX_PGXP_VARIANT=OFF -DPSX_GAME_VERSION="$version" \
         -DCMAKE_EXE_LINKER_FLAGS="-Wl,--build-id=none"
     cmake --build "$build_dir" --target psx-runtime -j "$jobs"
 fi
@@ -174,14 +174,12 @@ mkdir -p "$payload/licenses"
 [ ! -f "$fw/runtime/licenses/libchdr-NOTICES.txt" ] || cp "$fw/runtime/licenses/libchdr-NOTICES.txt" "$payload/licenses/"
 
 # --- prebuilt overlay cache + overlay toolchain ---------------------------
-cache_src_root=${OVERLAY_CACHE_DIR:-"$root/build-linux-cache/cache"}
-case "$cache_src_root" in
-    *QUARANTINE*) echo "refusing quarantined overlay cache source: $cache_src_root" >&2; exit 1 ;;
-esac
-psx_add_overlay_cache --game-id "$game_id" \
-                      --cache-src-root "$cache_src_root" \
-                      --stage "$payload" \
-                      --cg-tag "$cg_tag"
+python3 "$fw/tools/aot_overlay_pipeline.py" release \
+    --profile "$root/aot/overlays.json" --game-toml "$root/game.toml" \
+    --runtime-config "$player_toml" --runtime-build-dir "$build_dir" \
+    --runtime-target psx-runtime --recompiler "$recompiler_bin" \
+    --work-dir "$root/build-aot-linux" --stage "$payload" \
+    --gcc "${AOT_GCC:-gcc}" --workers "${AOT_WORKERS:-3}"
 psx_add_overlay_toolchain --stage "$payload" \
                           --recomp-dir "$(dirname -- "$recompiler_bin")" \
                           --recomp-tools "$fw/tools" \
@@ -191,6 +189,8 @@ psx_add_overlay_toolchain --stage "$payload" \
 cp "$player_toml" "$payload/game.toml"
 cp "$root/packaging/release/input.ini" "$root/packaging/release/START_HERE.txt" "$payload/"
 cp "$root/LICENSE" "$root/README.md" "$payload/"
+mkdir -p "$payload/docs"
+cp "$root/docs/AOT_OVERLAYS.md" "$payload/docs/"
 ln -s "../share/$PAYLOAD_DIR/assets" "$appdir/usr/bin/assets"
 
 if command -v magick >/dev/null 2>&1; then image_tool=magick
