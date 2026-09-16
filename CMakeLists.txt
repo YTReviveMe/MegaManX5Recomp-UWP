@@ -1,89 +1,86 @@
-cmake_minimum_required(VERSION 3.20)
-project(MegaManX5Recomp C CXX)
-include(CTest)
-
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 17)
-
-set(PSXRECOMP_V4_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/psxrecomp-v4" CACHE PATH
-    "Path to psxrecomp-v4")
-
-include("${PSXRECOMP_V4_ROOT}/runtime/runtime.cmake")
-
-# The recompiler emits the game body as SHARDS (SLUS_013.34_full_00.c ...) --
-# a single SLUS_013.34_full.c has not been produced for some time. This file
-# only knew the monolithic name, so a fresh regen built nothing and the
-# require-generated guard reported the game C as MISSING even though 31 shards
-# were sitting in generated/. Prefer shards, fall back to the old single file.
-# Same shape MegaManX6Recomp already uses.
-file(GLOB GAME_GENERATED_FULL_SHARDS CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_013.34_full_*.c")
-if(GAME_GENERATED_FULL_SHARDS)
-    set(GAME_GENERATED_FULL ${GAME_GENERATED_FULL_SHARDS})
-    list(POP_FRONT GAME_GENERATED_FULL GAME_GENERATED_PRIMARY)
-    set(GAME_GENERATED_EXTRAS ${GAME_GENERATED_FULL})
-    set(GAME_GENERATED_FULL ${GAME_GENERATED_PRIMARY})
-else()
-    set(GAME_GENERATED_FULL
-        "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_013.34_full.c")
+cmake_minimum_required(VERSION 3.24)
+set(CMAKE_SYSTEM_NAME WindowsStore)
+set(CMAKE_SYSTEM_VERSION 10.0.19041.0 CACHE STRING "Xbox SDK")
+project(MegaManX5RecompUWP C CXX)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(MMX5_UWP_DEPS "" CACHE PATH "Worley UWP dependencies (x64/bin, x64/lib, x64/include)")
+option(MMX5_PLATFORM_CHECK "Compile platform/runtime before game code generation; not a playable build" OFF)
+if(NOT MSVC)
+  message(FATAL_ERROR "Use MSVC and the Windows UWP SDK")
 endif()
-set(GAME_GENERATED_DISPATCH
-    "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_013.34_dispatch.c")
-
-# Trusted, statically linked activation plugins. The package manifests select
-# them by stable id; mod packages never carry or load native host code.
-file(GLOB MMX5_MOD_PLUGIN_SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/*.c")
-
-# X5's two game-owned presentation mods.
-#
-# The FRAMEWORK stages them: PRELOADED_MODS_DIR below hands the directory to
-# psxrecomp_add_runtime_target(), which wipes <exe-dir>/mods/bundled and copies
-# both its own mods/builtin/packages and these packages into it, plus
-# mods/preloaded/README.md -> mods/README.md. This repo must NOT copy the tree
-# itself. It used to, with a hand-written POST_BUILD copy_directory into
-# <exe-dir>/mods, and because that named the destination as a STRING, framework
-# commit 4cc04be3's rename of the staged catalog from mods/packages to
-# mods/bundled broke it silently -- nothing a configure, compile or link step
-# can see. The two mmx5.* packages went on landing in mods/packages, which
-# neither the launcher nor the release packager's Add-ModCatalog reads.
-# Bead beads-eio.3.101.
-set(MMX5_PRELOADED_MODS "${CMAKE_CURRENT_SOURCE_DIR}/mods/preloaded")
-
-psxrecomp_v4_add_runtime_target(psx-runtime
-    GAME_GENERATED_FULL_C "${GAME_GENERATED_FULL}"
-    GAME_GENERATED_DISPATCH_C "${GAME_GENERATED_DISPATCH}"
-    DEBUG_PORT 4520
-    WINDOW_TITLE "MegaManX5Recomp"
-    DEFAULT_GAME_CONFIG_PATH "game.toml"
-    EXE_NAME "mmx5-runtime"
-    LAUNCHER_BOXART "${CMAKE_SOURCE_DIR}/recomp/launcher/boxart.tga"
-    PRELOADED_MODS_DIR "${MMX5_PRELOADED_MODS}"
-    EXTRAS_SOURCES
-        ${GAME_GENERATED_EXTRAS}
-        ${MMX5_MOD_PLUGIN_SOURCES}
-)
-
-if(BUILD_TESTING)
-    find_package(Python3 REQUIRED COMPONENTS Interpreter)
-    add_test(
-        NAME mmx5_preloaded_mods_test
-        COMMAND "${Python3_EXECUTABLE}"
-                "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_preloaded_mods.py"
-                "${MMX5_PRELOADED_MODS}")
+foreach(f include/SDL2/SDL.h lib/SDL2.lib bin/SDL2.dll)
+  if(NOT EXISTS "${MMX5_UWP_DEPS}/x64/${f}")
+    message(FATAL_ERROR "Missing UWP dependency: ${MMX5_UWP_DEPS}/x64/${f}")
+  endif()
+endforeach()
+add_compile_definitions(PSX_UWP=1 WINAPI_FAMILY=WINAPI_FAMILY_APP NOMINMAX _CRT_SECURE_NO_WARNINGS)
+set(PSX_SDL_BACKEND SDL2 CACHE STRING "" FORCE)
+set(SDL2_INCLUDE_DIRS "${MMX5_UWP_DEPS}/x64/include;${MMX5_UWP_DEPS}/x64/include/SDL2")
+set(SDL2_LIBRARIES "${MMX5_UWP_DEPS}/x64/lib/SDL2.lib")
+set(PSX_RECOMP_UI OFF CACHE BOOL "" FORCE)
+set(PSX_ENABLE_VULKAN OFF CACHE BOOL "" FORCE)
+set(PSX_DEBUG_TOOLS OFF CACHE BOOL "" FORCE)
+set(PSX_PGXP_VARIANT OFF CACHE BOOL "" FORCE)
+set(PSX_REWIND OFF CACHE BOOL "" FORCE)
+set(PSXRECOMP_BIOS_STEMS OpenBIOS CACHE STRING "" FORCE)
+set(PSXRECOMP_SKIP_BIOS_STALE_CHECK ON CACHE BOOL "" FORCE)
+set(PSXRECOMP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/upstream/psxrecomp-v4")
+set(PSXRECOMP_ALLOW_NO_BIOS ${MMX5_PLATFORM_CHECK} CACHE BOOL "" FORCE)
+include("${PSXRECOMP_ROOT}/runtime/runtime.cmake")
+set_property(SOURCE "${PSXRECOMP_ROOT}/runtime/src/starvation_ring.c" APPEND PROPERTY COMPILE_OPTIONS /experimental:c11atomics)
+file(GLOB game_shards "${CMAKE_CURRENT_SOURCE_DIR}/upstream/generated/SLUS_013.34_full_*.c")
+set(game_dispatch "${CMAKE_CURRENT_SOURCE_DIR}/upstream/generated/SLUS_013.34_dispatch.c")
+if(NOT MMX5_PLATFORM_CHECK AND (NOT game_shards OR NOT EXISTS "${game_dispatch}"))
+  message(FATAL_ERROR "Generate the game code from your X5 USA disc using tools/generate.ps1 first.")
 endif()
-
-# First-divergence co-sim oracle build (COSIM_ORACLE.md): clean, deterministic,
-# PSX_NO_DEBUG_TOOLS + PSX_COSIM. Two of these (one normal, one PSX_FORCE_INTERP=1)
-# are cycle-lockstepped by tools/cosim.py to find the exact first compiled-vs-interp
-# divergence. Only built on explicit request (-DPSX_BUILD_COSIM=ON) to keep normal
-# game builds lean.
-if(PSX_BUILD_COSIM)
-    psxrecomp_v4_add_runtime_target(psx-cosim
-        GAME_GENERATED_FULL_C "${GAME_GENERATED_FULL}"
-        GAME_GENERATED_DISPATCH_C "${GAME_GENERATED_DISPATCH}"
-        WINDOW_TITLE "MMX5-cosim"
-        DEFAULT_GAME_CONFIG_PATH "game.toml"
-        COSIM
-    )
+set(game_args)
+if(game_shards AND EXISTS "${game_dispatch}")
+  list(APPEND game_args GAME_GENERATED_FULL_C ${game_shards} GAME_GENERATED_DISPATCH_C "${game_dispatch}")
 endif()
+set(overlay_dispatch "${CMAKE_CURRENT_SOURCE_DIR}/upstream/generated/overlays_static.c")
+if(EXISTS "${overlay_dispatch}")
+  list(APPEND game_args GAME_OVERLAY_STATIC_C "${overlay_dispatch}")
+elseif(NOT MMX5_PLATFORM_CHECK)
+  message(FATAL_ERROR "Static overlays are missing. Run tools/generate.ps1.")
+endif()
+psxrecomp_add_runtime_target(mmx5 ${game_args}
+  WINDOW_TITLE "Mega Man X5 Recomp UWP" EXE_NAME "MegaManX5"
+  DEFAULT_GAME_CONFIG_PATH "game.toml"
+  PRELOADED_MODS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/upstream/mods/preloaded"
+  EXTRAS_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/upstream/src/mods/mmx5_widescreen_plugin.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/upstream/src/mods/mmx5_frame_interpolation_plugin.c")
+get_target_property(link_flags mmx5 LINK_OPTIONS)
+list(FILTER link_flags EXCLUDE REGEX "ENTRY:mainCRTStartup")
+set_property(TARGET mmx5 PROPERTY LINK_OPTIONS "${link_flags}")
+set_property(TARGET mmx5 PROPERTY WIN32_EXECUTABLE TRUE)
+get_target_property(link_libs mmx5 LINK_LIBRARIES)
+list(REMOVE_ITEM link_libs dbghelp comdlg32 iphlpapi ws2_32)
+set_property(TARGET mmx5 PROPERTY LINK_LIBRARIES "${link_libs}")
+target_link_libraries(mmx5 PRIVATE WindowsApp "${MMX5_UWP_DEPS}/x64/lib/libuwp.lib")
+target_include_directories(mmx5 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/uwp")
+target_compile_options(mmx5 PRIVATE /bigobj /experimental:deterministic "/pathmap:${CMAKE_SOURCE_DIR}=.")
+set_source_files_properties("${PSXRECOMP_ROOT}/runtime/src/main.cpp" PROPERTIES COMPILE_DEFINITIONS "main=mmx5_runtime_main")
+add_library(uwp_entry OBJECT uwp/winrt_main.cpp)
+set_target_properties(uwp_entry PROPERTIES CXX_STANDARD 14)
+target_compile_options(uwp_entry PRIVATE /ZW)
+target_include_directories(uwp_entry PRIVATE ${SDL2_INCLUDE_DIRS})
+target_sources(mmx5 PRIVATE uwp/launcher.cpp $<TARGET_OBJECTS:uwp_entry>)
+target_sources(mmx5 PRIVATE
+  "${CMAKE_CURRENT_SOURCE_DIR}/upstream/recomp-ui/src/common/recomp_runtime_ui.c"
+  "${CMAKE_CURRENT_SOURCE_DIR}/upstream/recomp-ui/src/common/recomp_runtime_settings.c")
+target_include_directories(mmx5 PRIVATE
+  "${CMAKE_CURRENT_SOURCE_DIR}/upstream/recomp-ui/src"
+  "${CMAKE_CURRENT_SOURCE_DIR}/upstream/recomp-ui/src/common")
+set(imgui "${CMAKE_CURRENT_SOURCE_DIR}/upstream/recomp-ui/src/third_party/imgui")
+target_sources(mmx5 PRIVATE "${imgui}/imgui.cpp" "${imgui}/imgui_draw.cpp" "${imgui}/imgui_tables.cpp" "${imgui}/imgui_widgets.cpp"
+  "${imgui}/backends/imgui_impl_sdl2.cpp" "${imgui}/backends/imgui_impl_opengl3.cpp")
+target_include_directories(mmx5 PRIVATE "${imgui}" "${imgui}/backends")
+target_link_directories(mmx5 BEFORE PRIVATE "$ENV{VCToolsInstallDir}/lib/x64/store")
+target_link_options(mmx5 PRIVATE /APPCONTAINER /WINMD "/WINMDFILE:${CMAKE_BINARY_DIR}/MegaManX5.winmd" "/MAP:${CMAKE_BINARY_DIR}/MegaManX5.map")
+foreach(f SDL2.dll libuwp.dll opengl32.dll libgallium_wgl.dll dxil.dll z-1.dll)
+  configure_file("${MMX5_UWP_DEPS}/x64/bin/${f}" "${CMAKE_BINARY_DIR}/${f}" COPYONLY)
+endforeach()
+configure_file(upstream/game.toml "${CMAKE_BINARY_DIR}/game.toml" COPYONLY)

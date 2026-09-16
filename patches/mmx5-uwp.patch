@@ -1,0 +1,28 @@
+diff --git a/aot/overlays.json b/aot/overlays.json
+index 7d58d1b..aa00e48 100644
+--- a/aot/overlays.json
++++ b/aot/overlays.json
+@@ -4,9 +4,9 @@
+   "disc_hashes": {
+     "sha1": "10709231f857636b5ccd3cd9acebc91458dcb5fd"
+   },
+-  "expected_records": 54,
++  "expected_records": 53,
+   "strict_bounds": true,
+-  "bios_resident": true,
++  "bios_resident": false,
+   "checks": [
+     {
+       "method": "words",
+diff --git a/game.toml b/game.toml
+index eb33114..0f055ba 100644
+--- a/game.toml
++++ b/game.toml
+@@ -139,6 +139,7 @@ a1_sites = [
+ default_analog = true
+ deadzone       = 12000
+ allow_hybrid   = false
++p1_device      = "auto"
+ 
+ # ── Audit-specific config (consumed by psxrecomp tools/*.py and tests) ──
+ [audit]

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         IgnorableNamespaces="uap mp">
+  <Identity Name="MegaManX5RecompUWP" Publisher="CN=Revive" Version="0.1.17.0" ProcessorArchitecture="x64" />
+  <mp:PhoneIdentity PhoneProductId="9f74fb3d-1731-4d8e-929a-6f0e284a13c5"
+                    PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Mega Man X5 Recomp UWP</DisplayName>
+    <PublisherDisplayName>Revive</PublisherDisplayName>
+    <Logo>assets\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+    <PackageDependency Name="Microsoft.VCLibs.140.00" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" MinVersion="14.0.0.0" />
+  </Dependencies>
+  <Resources><Resource Language="en-us" /></Resources>
+  <Applications>
+    <Application Id="App" Executable="MegaManX5.exe" EntryPoint="MegaManX5.App">
+      <uap:VisualElements DisplayName="Mega Man X5 Recomp UWP"
+          Description="Mega Man X5 Recomp UWP"
+          BackgroundColor="#071224" Square150x150Logo="assets\Square150x150Logo.png"
+          Square44x44Logo="assets\Square44x44Logo.png">
+        <uap:SplashScreen Image="assets\SplashScreen.png" BackgroundColor="#071224" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="megamanx5-data">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.cue</uap:FileType>
+              <uap:FileType>.bin</uap:FileType>
+              <uap:FileType>.mcd</uap:FileType>
+              <uap:FileType>.pst</uap:FileType>
+              <uap:FileType>.toml</uap:FileType>
+              <uap:FileType>.json</uap:FileType>
+              <uap:FileType>.txt</uap:FileType>
+              <uap:FileType>.md</uap:FileType>
+              <uap:FileType>.log</uap:FileType>
+              <uap:FileType>.png</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <uap:Capability Name="removableStorage" />
+  </Capabilities>
+</Package>
