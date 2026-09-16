@@ -2,7 +2,7 @@ param([string]$OutputPath)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $build = Join-Path $root 'build\uwp'
-if (!$OutputPath) { $OutputPath = Join-Path $build 'MegaManX5RecompUWP-v0.1.17-x64.zip' }
+if (!$OutputPath) { $OutputPath = Join-Path $build 'MegaManX5RecompUWP-v0.1.0-x64.zip' }
 $required = @(
     'MegaManX5RecompUWP.appx',
     'Dependencies\x64\Microsoft.VCLibs.x64.14.00.appx'
