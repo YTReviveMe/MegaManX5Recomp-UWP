@@ -3,7 +3,7 @@
          xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
          xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
          IgnorableNamespaces="uap mp">
-  <Identity Name="MegaManX5RecompUWP" Publisher="CN=Revive" Version="0.1.17.0" ProcessorArchitecture="x64" />
+  <Identity Name="MegaManX5RecompUWP" Publisher="CN=Revive" Version="0.1.0.0" ProcessorArchitecture="x64" />
   <mp:PhoneIdentity PhoneProductId="9f74fb3d-1731-4d8e-929a-6f0e284a13c5"
                     PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
